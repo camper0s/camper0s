@@ -74,8 +74,8 @@ function mousePressed() {
 #include "ESPAsyncWebServer.h"
 #include "ESPAsyncTCP.h"
 #include <Arduino_JSON.h>
-const char *ssid = "TIM-37665000";
-const char *password = "sipavavekimie";
+const char *ssid = "yourSSID";
+const char *password = "yourPassword";
 /////////////////
 float ardu1;
 int ardu2;
