@@ -69,10 +69,9 @@ function mousePressed() {
 </script>
 </html>)rawliteral";
 ////////////////////////////////////////////////////////////////////arduino esp8266
-#include <espnow.h>
+
 #include <ESP8266WiFi.h>
 #include "ESPAsyncWebServer.h"
-#include "ESPAsyncTCP.h"
 #include <Arduino_JSON.h>
 const char *ssid = "yourSSID";
 const char *password = "yourPassword";
