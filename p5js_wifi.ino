@@ -6,10 +6,10 @@ const char index_html[] PROGMEM = R"rawliteral(
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
    <script type="text/javascript">
 /////////////////////////////////////////////////////////////////////Processing P5.js
-var arduVal1
-var arduVal2
+let arduVal1
+let arduVal2
 let p5
-let r
+let rot
 function setup() {
   createCanvas(700, 700);
   r = random(255);
@@ -17,7 +17,7 @@ function setup() {
   b = random(255);
 textAlign(CENTER);
 textSize(width/30);
-r =0;
+rot =0;
 p5=0;
 arduVal1=0;
 arduVal2=0;
@@ -46,8 +46,8 @@ ellipse(width/2, width/2, width/3.6, width/3.6);
 push();
 translate(width / 2, width / 2);
 fill(0,255,0);
-r = r+1;
-rotate(radians(r));
+rot = rot+1;
+rotate(radians(rot));
 rect(-26, -26, 52, 52);
 pop();
 
