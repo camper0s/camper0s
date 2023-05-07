@@ -6,10 +6,13 @@ const char index_html[] PROGMEM = R"rawliteral(
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
    <script type="text/javascript">
 /////////////////////////////////////////////////////////////////////Processing P5.js
+let source
 let arduVal1
 let arduVal2
 let p5
 let rot
+let interval
+let previousMillis
 function setup() {
   createCanvas(700, 700);
   r = random(255);
@@ -17,26 +20,32 @@ function setup() {
   b = random(255);
 textAlign(CENTER);
 textSize(width/30);
-rot =0;
-p5=0;
-arduVal1=0;
-arduVal2=0;
+rot = 0;
+p5 = 0;
+arduVal1 = 0;
+arduVal2 = 0;
+interval = 5000;
+previousMillis = 0;
+source = 0
  }
 function draw() {
-var source = new EventSource('/events');
+let currentMillis = millis();
+if (currentMillis - previousMillis >= interval) {
+source = new EventSource('/events');
 source.addEventListener('newVal', function(e) {
 const obj = JSON.parse(e.data);
-arduVal1 = obj.out1.toFixed(2); // toFixed(2) =  2 decimal
+arduVal1 = obj.out1.toFixed(2); // toFixed(2) = 2 decimal
 arduVal2 = obj.out2;
 });
-
+previousMillis = currentMillis;
+}
 background(200,50,20);
 noStroke();
 fill(20,20,255);
-text ("from ardu1 (5s)", width/20, width/14);
-text (arduVal1, width/20, width/9);
-text ("from ardu2 (5s)", width/2.9, width/14);
-text (arduVal2, width/2.9, width/9);
+text ("from ardu1 (5s)", width/4, width/14);
+text (arduVal1, width/4, width/9);
+text ("from ardu2 (5s)", width/1.5, width/14);
+text (arduVal2, width/1.5, width/9);
 
 strokeWeight(2);
 stroke(r, g, b);
@@ -72,12 +81,15 @@ function mousePressed() {
 
 #include <ESP8266WiFi.h>
 #include "ESPAsyncWebServer.h"
+
 #include <Arduino_JSON.h>
-const char *ssid = "yourSSID";
-const char *password = "yourPassword";
+const char *ssid = "TIM-37665000";
+const char *password = "sipavavekimie";
 /////////////////
 float ardu1;
 int ardu2;
+unsigned long previousMillis = 0;
+const long interval = 5000;
 AsyncWebServer server(80);
 AsyncEventSource events("/events");
 
@@ -102,12 +114,20 @@ void setup() {
 }
 
 void loop() {
+  unsigned long currentMillis = millis();
   ardu1 = ardu1 + 0.01;
   ardu2 = random(1, 1234);
   JSONVar myVal;
   myVal["out1"] = ardu1;
   myVal["out2"] = ardu2;
   String jsonStr = JSON.stringify(myVal);
-  events.send(jsonStr.c_str(), "newVal", millis(), 5000);
-  events.send("ping", NULL, millis(), 5000);
+
+
+ if (currentMillis - previousMillis >= interval) {
+    events.send(jsonStr.c_str(), "newVal", millis(), 1);
+    events.send("ping", NULL, millis(), 1);
+    previousMillis = currentMillis;
+}
+
+
 }
