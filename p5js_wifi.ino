@@ -72,9 +72,10 @@ function mousePressed() {
 
 #include <ESP8266WiFi.h>
 #include "ESPAsyncWebServer.h"
+
 #include <Arduino_JSON.h>
-const char *ssid = "yourSSID";
-const char *password = "yourPassword";
+const char *ssid = "TIM-37665000";
+const char *password = "sipavavekimie";
 /////////////////
 float ardu1;
 int ardu2;
